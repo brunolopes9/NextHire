@@ -6,7 +6,7 @@ import { Analytics } from "./components/Analytics"
 import Footer from "./components/Footer"
 const LandingPage = () => {
   return (
-    <div className="min-h-screen mb-[100vh]">
+    <div className="min-h-screen">
       <Header />
       <Hero />
       <Features />
