@@ -8,28 +8,28 @@ export const Analytics = () => {
       title: "Active Users",
       value: "2.4M+",
       growth: "+15%",
-      color: "blue",
+      color: "yellow",
     },
     {
       icon: Briefcase,
       title: "Jobs Posted",
       value: "150K+",
       growth: "+22%",
-      color: "purple",
+      color: "orange",
     },
     {
       icon: Target,
       title: "Successful Hires",
       value: "89K+",
       growth: "+18%",
-      color: "green",
+      color: "brown",
     },
     {
       icon: TrendingUp,
       title: "Match Rate",
       value: "94%",
       growth: "+8%",
-      color: "orange",
+      color: "blue",
     },
   ]
 
@@ -45,7 +45,7 @@ export const Analytics = () => {
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
             Platform{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
               Analytics
             </span>
           </h2>

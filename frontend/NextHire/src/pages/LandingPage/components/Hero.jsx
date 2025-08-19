@@ -26,7 +26,7 @@ const Hero = () => {
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight pt-10"
           >
             Find Your Dream Job or
-            <span className="block bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mt-2 ">
+            <span className="block bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent mt-2 ">
               Perfect Hire
             </span>
           </motion.h1>
@@ -52,7 +52,7 @@ const Hero = () => {
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="group bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center space-x-2"
+              className="group bg-gradient-to-r from-yellow-600 to-orange-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center space-x-2"
               onClick={() => navigate("/find-jobs")}
             >
               <Search className="w-5 h-5" />
@@ -91,8 +91,8 @@ const Hero = () => {
                 transition={{ delay: 0.8 + index * 0.1, duration: 0.6 }}
                 className="flex flex-col items-center space-y-2 p-4 rounded-xl hover:gb-gray-50 transition-colors"
               >
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-100 to-purple-100 rounded-xl flex items-center justify-center mb-2">
-                  <stat.icon className="2-6 h-6 text-blue-600" />
+                <div className="w-12 h-12 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-xl flex items-center justify-center mb-2">
+                  <stat.icon className="2-6 h-6 text-yellow-600" />
                 </div>
                 <div className="text-2xl font-bold text-gray-900">
                   {stat.value}{" "}
@@ -109,9 +109,9 @@ const Hero = () => {
       {/*subtle background elements*/}
 
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-blue-100 rounded-full blur-3xl opacity-30" />
-        <div className="absolute bottom-20 right-10 w-40 h-40 bg-purple-100 rounded-full blur-3xl opacity-30" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 2-96 h-96 bg-gradient-to-r from-blue-50 to-purple-50 rounded-full blur-3xl opacity-20" />
+        <div className="absolute top-20 left-10 w-32 h-32 bg-yellow-100 rounded-full blur-3xl opacity-30" />
+        <div className="absolute bottom-20 right-10 w-40 h-40 bg-orange-100 rounded-full blur-3xl opacity-30" />
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 2-96 h-96 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-full blur-3xl opacity-20" />
       </div>
     </section>
   )

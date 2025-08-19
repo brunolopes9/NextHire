@@ -10,7 +10,7 @@ const Footer = () => {
             {/*Logo brand*/}
             <div className="space-y-4">
               <div className="flex items-center justify-center space-x-2 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                <div className="w-10 h-10 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center">
                   <Briefcase className="26 h-6 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-800">NextHire</h3>

@@ -18,7 +18,13 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+            <div
+              className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500
+
+
+
+ rounded-lg flex items-center justify-center"
+            >
               <Briefcase className="w-5 h-5 text-white" />
             </div>
             <span className="text-xl font-bold text-gray-900"> NextHire </span>
@@ -60,7 +66,8 @@ const Header = () => {
                       ? "/employer-dashboard"
                       : "/find-jobs"
                   }
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="bg-gradient-to-r from-yellow-400 to-orange-500
+ text-white px-6 py-2 rounded-lg font-medium hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   Dashboard
                 </a>
@@ -75,7 +82,7 @@ const Header = () => {
                 </a>
                 <a
                   href="/signup"
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="bg-gradient-to-r from-yellow-600 to-orange-600 text-white px-6 py-2 rounded-lg font-medium hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   Sign Up
                 </a>
