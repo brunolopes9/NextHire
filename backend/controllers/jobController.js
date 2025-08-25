@@ -75,6 +75,7 @@ exports.getJobs = async (req, res) => {
         applicationStatus: appliedJobStatusMap[jobIdStr] || null,
       }
     })
+    res.json(jobsWithExtras)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -83,6 +84,31 @@ exports.getJobs = async (req, res) => {
 //@desc Get jobs for logged in user / employer can see posted jobs)
 exports.getJobsEmployer = async (req, res) => {
   try {
+    const userId = req.user._id
+    const { role } = req.user
+
+    if (role !== "employer") {
+      return res.status(403).json({ message: "access denied" })
+    }
+
+    //get all jobs posted by employer
+    const jobs = await Job.find({ company: userId })
+      .populate("company", "name companyName companyLogo")
+      .lean() // lean makes jobs plain js objets so we can add new fields
+
+    // count applications for each job
+    const jobsWithApplicationCounts = await Promise.all(
+      jobs.map(async (job) => {
+        const applicationCount = await Application.countDocuments({
+          job: job._id,
+        })
+        return {
+          ...job,
+          applicationCount,
+        }
+      })
+    )
+    res.json(jobsWithApplicationCounts)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -91,6 +117,29 @@ exports.getJobsEmployer = async (req, res) => {
 //@desc get single job by id
 exports.getJobById = async (req, res) => {
   try {
+    const { userId } = req.query
+    const job = await Job.findById(req.params.id).populate(
+      "company",
+      "name companyName companyLogo"
+    )
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" })
+    }
+    let applicationStatus = null
+    if (userId) {
+      const application = await Application.findOne({
+        job: job._id,
+        applicant: userId,
+      }).select("status")
+
+      if (application) {
+        applicationStatus = application.status
+      }
+    }
+    res.json({
+      ...job.toObject(),
+      applicationStatus,
+    })
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -100,6 +149,18 @@ exports.getJobById = async (req, res) => {
 
 exports.updateJob = async (req, res) => {
   try {
+    const job = await Job.findById(req.params.id)
+    if (!job) return res.status(404).json({ message: "job not found" })
+
+    if (job.company.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this job" })
+    }
+
+    Object.assign(job, req.body)
+    const updated = await job.save()
+    res.json(updated)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -108,6 +169,16 @@ exports.updateJob = async (req, res) => {
 
 exports.deleteJob = async (req, res) => {
   try {
+    const job = await Job.findById(req.params.id)
+    if (!job) return res.status(404).json({ message: "Job not found" })
+
+    if (job.company.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to delete this job" })
+    }
+    await job.deleteOne()
+    res.json({ message: "Job deleted successfully" })
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
@@ -116,6 +187,19 @@ exports.deleteJob = async (req, res) => {
 //@desc Toggle close status for a job ( employer only)
 exports.toggleCloseJob = async (req, res) => {
   try {
+    const job = await Job.findById(req.params.id)
+    if (!job) return res.status(404).json({ message: "Job not found" })
+
+    if (job.company.toString() !== req.user._id.toString()) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to close this job" })
+    }
+
+    job.isClosed = !job.isClosed
+    await job.save()
+
+    res.json({ message: "Job marked as closed" })
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
