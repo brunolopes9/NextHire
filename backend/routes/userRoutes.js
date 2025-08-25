@@ -11,7 +11,7 @@ const router = express.Router()
 
 //Protected Routes
 router.put("/profile", protect, updateProfile)
-router.post("/profile", protect, deleteResume)
+router.delete("/profile", protect, deleteResume)
 
 //Public Route
 
