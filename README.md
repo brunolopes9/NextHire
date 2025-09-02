@@ -50,27 +50,48 @@ Next Hire is a **full-featured Job Portal** built with the **MERN stack (MongoDB
 
 ## 📁 Project Structure
 backend/
+
 ├── controllers/
+
 ├── middlewares/
+
 ├── models/
+
 ├── routes/
+
 ├── config/
+
 └── server.js
 
+
 frontend/
+
 ├── src/
+
 │ ├── components/
+
 │ │ ├── cards/
+
 │ │ ├── input/
+
 │ │ └── layout/
+
 │ ├── context/
+
 │ ├── pages/
+
 │ │ ├── Auth/
+
 │ │ ├── JobSeeker/
+
 │ │ ├── Employer/
+
 │ │ └── LandingPage/
+
 │ ├── routes/
+
 │ └── utils/
+
 └── App.jsx
 
 ---
@@ -108,27 +129,37 @@ Open in browser: http://localhost:3000
 Auth
 
 POST /api/auth/register — Sign up
+
 POST /api/auth/login — Log in
+
 GET /api/auth/me — Get current user profile
 
 Jobs
+
 GET /api/jobs — List all jobs
+
 POST /api/jobs — Create job (employer)
+
 PUT /api/jobs/:id — Update job
+
 DELETE /api/jobs/:id — Delete job
+
 PUT /api/jobs/:id/toggle-close — Open/Close job
 
 Applications
+
 POST /api/applications/:jobId — Apply to a job
 GET /api/applications/my — My applications
 GET /api/applications/job/:jobId — View applicants (employer)
 
 Saved Jobs
+
 POST /api/save-jobs/:jobId — Save a job
 DELETE /api/save-jobs/:jobId — Remove saved job
 GET /api/save-jobs/my — List saved jobs
 
 📌 Notes
+
 JWT used for protected routes
 File uploads handled via Multer
 Separate dashboards for employers and job seekers
