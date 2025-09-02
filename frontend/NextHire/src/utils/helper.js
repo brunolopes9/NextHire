@@ -1,4 +1,4 @@
-//Validation Functions
+// Validation functions
 export const validateEmail = (email) => {
   if (!email.trim()) return "Email is required"
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -19,7 +19,7 @@ export const validatePassword = (password) => {
 }
 
 export const validateAvatar = (file) => {
-  if (!file) return "" //avatar is optional
+  if (!file) return "" // Avatar is optional
 
   const allowedTypes = ["image/jpeg", "image/jpg", "image/png"]
   if (!allowedTypes.includes(file.type)) {
@@ -30,5 +30,15 @@ export const validateAvatar = (file) => {
   if (file.size > maxSize) {
     return "Avatar must be less than 5MB"
   }
+
   return ""
+}
+
+export const getInitials = (name) => {
+  return name
+    .split(" ")
+    .map((word) => word.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2)
 }

@@ -18,7 +18,7 @@ export const jobSeekerFeatures = [
     icon: Search,
     title: "Smart Job Matching",
     description:
-      "AI-Powered algorithm matches you with relevant opportunities based on your skills and preferences.",
+      "AI-powered algorithm matches you with relevant opportunities based on your skills and preferences.",
   },
   {
     icon: FileText,
@@ -36,14 +36,14 @@ export const jobSeekerFeatures = [
     icon: Award,
     title: "Skill Assessment",
     description:
-      "Showcase your abilities with verified skill tests and earn badges that employers trust",
+      "Showcase your abilities with verified skill tests and earn badges that employers trust.",
   },
 ]
 
 export const employerFeatures = [
   {
     icon: Users,
-    title: "Talent Poll Access",
+    title: "Talent Pool Access",
     description:
       "Access our vast database of pre-screened candidates and find the perfect fit for your team.",
   },
@@ -51,7 +51,7 @@ export const employerFeatures = [
     icon: BarChart3,
     title: "Analytics Dashboard",
     description:
-      " Track your hiring performance with detailed analytics and insights on candidate engagement.",
+      "Track your hiring performance with detailed analytics and insights on candidate engagement.",
   },
   {
     icon: Shield,
@@ -67,8 +67,7 @@ export const employerFeatures = [
   },
 ]
 
-// Navigation Items configuration
-
+// Navigation items configuration
 export const NAVIGATION_MENU = [
   { id: "employer-dashboard", name: "Dashboard", icon: LayoutDashboard },
   { id: "post-job", name: "Post Job", icon: Plus },
@@ -83,7 +82,7 @@ export const CATEGORIES = [
   { value: "Marketing", label: "Marketing" },
   { value: "Sales", label: "Sales" },
   { value: "IT & Software", label: "IT & Software" },
-  { value: "Customer-service", label: "Customer-service" },
+  { value: "Customer-service", label: "Customer Service" },
   { value: "Product", label: "Product" },
   { value: "Operations", label: "Operations" },
   { value: "Finance", label: "Finance" },
@@ -101,6 +100,6 @@ export const JOB_TYPES = [
 
 export const SALARY_RANGES = [
   "Less than $1000",
-  "$1000 - $15,000 ",
+  "$1000 - $15,000",
   "More than $15,000",
 ]
