@@ -2,11 +2,12 @@ import React from "react"
 import { motion } from "framer-motion"
 import { Briefcase } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useAuth } from "../../../context/AuthContext"
 
 const Header = () => {
-  const isAuthenticated = true
-  const user = { fullName: "Bruno", role: "employer" }
+  const { user, isAuthenticated } = useAuth()
   const navigate = useNavigate()
+
   return (
     <motion.header
       initial={{ opacity: 0, y: -20 }}
@@ -18,19 +19,13 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div
-              className="w-8 h-8 bg-gradient-to-r from-yellow-400 to-orange-500
-
-
-
- rounded-lg flex items-center justify-center"
-            >
+            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
               <Briefcase className="w-5 h-5 text-white" />
             </div>
-            <span className="text-xl font-bold text-gray-900"> NextHire </span>
+            <span className="text-xl font-bold text-gray-900">JobPortal</span>
           </div>
 
-          {/* Navigation Links - Hidden on Mobile */}
+          {/* Navigation Links - Hidden on mobile */}
           <nav className="hidden md:flex items-center space-x-8">
             <a
               onClick={() => navigate("/find-jobs")}
@@ -46,7 +41,7 @@ const Header = () => {
                     : "/login"
                 )
               }}
-              className="text-gray-600 hover:text-gray-900 transition-colors font-medium "
+              className="text-gray-600 hover:text-gray-900 transition-colors font-medium"
             >
               For Employers
             </a>
@@ -56,18 +51,14 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             {isAuthenticated ? (
               <div className="flex items-center space-x-3">
-                <span className="text-gray-700">
-                  {" "}
-                  Welcome, {user?.fullName}{" "}
-                </span>
+                <span className="text-gray-700">Welcome, {user?.fullName}</span>
                 <a
                   href={
                     user?.role === "employer"
                       ? "/employer-dashboard"
                       : "/find-jobs"
                   }
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500
- text-white px-6 py-2 rounded-lg font-medium hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   Dashboard
                 </a>
@@ -76,13 +67,13 @@ const Header = () => {
               <>
                 <a
                   href="/login"
-                  className="text-gray-600 hover:text-gray-900 transition-colors font-medium px-4 py-2 rounded-lg hover:bg-gradient-500"
+                  className="text-gray-600 hover:text-gray-900 transition-colors font-medium px-4 py-2 rounded-lg hover:bg-gray-50"
                 >
                   Login
                 </a>
                 <a
                   href="/signup"
-                  className="bg-gradient-to-r from-yellow-600 to-orange-600 text-white px-6 py-2 rounded-lg font-medium hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-lg font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-sm hover:shadow-md"
                 >
                   Sign Up
                 </a>

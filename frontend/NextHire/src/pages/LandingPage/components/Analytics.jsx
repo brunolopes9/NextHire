@@ -1,35 +1,35 @@
 import { motion } from "framer-motion"
 import { TrendingUp, Users, Briefcase, Target } from "lucide-react"
 
-export const Analytics = () => {
+const Analytics = () => {
   const stats = [
     {
       icon: Users,
       title: "Active Users",
       value: "2.4M+",
       growth: "+15%",
-      color: "yellow",
+      color: "blue",
     },
     {
       icon: Briefcase,
       title: "Jobs Posted",
       value: "150K+",
       growth: "+22%",
-      color: "orange",
+      color: "purple",
     },
     {
       icon: Target,
       title: "Successful Hires",
       value: "89K+",
       growth: "+18%",
-      color: "brown",
+      color: "green",
     },
     {
       icon: TrendingUp,
       title: "Match Rate",
       value: "94%",
       growth: "+8%",
-      color: "blue",
+      color: "orange",
     },
   ]
 
@@ -44,8 +44,9 @@ export const Analytics = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Platform{" "}
-            <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent">
+            Platform
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              {" "}
               Analytics
             </span>
           </h2>
@@ -55,7 +56,7 @@ export const Analytics = () => {
           </p>
         </motion.div>
 
-        {/*Stats Cards */}
+        {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {stats.map((stat, index) => (
             <motion.div
@@ -77,10 +78,9 @@ export const Analytics = () => {
                 </span>
               </div>
               <h3 className="text-3xl font-bold text-gray-900 mb-2">
-                {" "}
-                {stat.value}{" "}
+                {stat.value}
               </h3>
-              <p className="text-gray-600"> {stat.title} </p>
+              <p className="text-gray-600">{stat.title}</p>
             </motion.div>
           ))}
         </div>
