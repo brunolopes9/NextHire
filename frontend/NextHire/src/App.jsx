@@ -18,10 +18,11 @@ import ManageJobs from "./pages/Employer/ManageJobs"
 import ApplicationViewer from "./pages/Employer/ApplicationViewer"
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage"
 import ProtectedRoute from "./routes/ProtectedRoute"
+import { AuthProvider } from "./context/AuthContext"
 
 const App = () => {
   return (
-    <div>
+    <AuthProvider>
       <Router>
         <Routes>
           {/*Public Routes */}
@@ -56,7 +57,7 @@ const App = () => {
           },
         }}
       />
-    </div>
+    </AuthProvider>
   )
 }
 
