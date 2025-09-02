@@ -2,8 +2,7 @@ const fs = require("fs")
 const path = require("path")
 const User = require("../models/User")
 
-//@dest Update user profile ( name,avatar, company details)
-
+// @desc    Update user profile (name, avatar, company details)
 exports.updateProfile = async (req, res) => {
   try {
     const {
@@ -21,7 +20,7 @@ exports.updateProfile = async (req, res) => {
     user.avatar = avatar || user.avatar
     user.resume = resume || user.resume
 
-    //If Employer , allow updating company info
+    // If employer, allow updating company info
     if (user.role === "employer") {
       user.companyName = companyName || user.companyName
       user.companyDescription = companyDescription || user.companyDescription
@@ -45,13 +44,12 @@ exports.updateProfile = async (req, res) => {
   }
 }
 
-//@desc delete resume file (JobSeeker only)
-
+// @desc    Delete resume file (Jobseeker only)
 exports.deleteResume = async (req, res) => {
   try {
-    const { resumeUrl } = req.body // expect resume url to be the url of the resume
+    const { resumeUrl } = req.body // expect resumeUrl to be the URL of the resume
 
-    //extract file name from the url
+    // Extract file name from the URL
     const fileName = resumeUrl?.split("/")?.pop()
 
     const user = await User.findById(req.user._id)
@@ -62,15 +60,15 @@ exports.deleteResume = async (req, res) => {
         .status(403)
         .json({ message: "Only jobseekers can delete resume" })
 
-    //construct the full file path
+    // Construct the full file path
     const filePath = path.join(__dirname, "../uploads", fileName)
 
-    // Check file exists and then delete
+    // Check if the file exists and then delete
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath) // Delete the file
     }
 
-    //Set users resume to empty string
+    // Set the user's resume to an empty string
     user.resume = ""
     await user.save()
 
@@ -80,8 +78,7 @@ exports.deleteResume = async (req, res) => {
   }
 }
 
-//@desc Get User Public Profile
-
+// @desc    Get user public profile
 exports.getPublicProfile = async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password")

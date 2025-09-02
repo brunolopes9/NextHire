@@ -3,11 +3,11 @@ const User = require("../models/User")
 const Application = require("../models/Application")
 const SavedJob = require("../models/SavedJob")
 
-//@desct Create a new job ( employer only)
+// @desc    Create a new job (Employer only)
 exports.createJob = async (req, res) => {
   try {
     if (req.user.role !== "employer") {
-      return res.status(403).json({ message: err.message })
+      return res.status(403).json({ message: "Only employers can post jobs" })
     }
 
     const job = await Job.create({ ...req.body, company: req.user._id })
@@ -35,6 +35,7 @@ exports.getJobs = async (req, res) => {
     if (minSalary) {
       query.$and.push({ salaryMax: { $gte: Number(minSalary) } })
     }
+
     if (maxSalary) {
       query.$and.push({ salaryMin: { $lte: Number(maxSalary) } })
     }
@@ -43,6 +44,7 @@ exports.getJobs = async (req, res) => {
       delete query.$and
     }
   }
+
   try {
     const jobs = await Job.find(query).populate(
       "company",
@@ -53,11 +55,11 @@ exports.getJobs = async (req, res) => {
     let appliedJobStatusMap = {}
 
     if (userId) {
-      //saved jobs
+      // Saved Jobs
       const savedJobs = await SavedJob.find({ jobseeker: userId }).select("job")
       savedJobIds = savedJobs.map((s) => String(s.job))
 
-      //Aplications
+      // Applications
       const applications = await Application.find({ applicant: userId }).select(
         "job status"
       )
@@ -66,7 +68,7 @@ exports.getJobs = async (req, res) => {
       })
     }
 
-    //Add Is Saved and applications status to each job
+    // Add isSaved and applicationStatus to each job
     const jobsWithExtras = jobs.map((job) => {
       const jobIdStr = String(job._id)
       return {
@@ -75,28 +77,29 @@ exports.getJobs = async (req, res) => {
         applicationStatus: appliedJobStatusMap[jobIdStr] || null,
       }
     })
+
     res.json(jobsWithExtras)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
 }
 
-//@desc Get jobs for logged in user / employer can see posted jobs)
+// @desc    Get jobs for logged in user (Employer can see posted jobs)
 exports.getJobsEmployer = async (req, res) => {
   try {
     const userId = req.user._id
     const { role } = req.user
 
     if (role !== "employer") {
-      return res.status(403).json({ message: "access denied" })
+      return res.status(403).json({ message: "Access denied" })
     }
 
-    //get all jobs posted by employer
+    // Get all jobs posted by employer
     const jobs = await Job.find({ company: userId })
       .populate("company", "name companyName companyLogo")
-      .lean() // lean makes jobs plain js objets so we can add new fields
+      .lean() // .lean() makes jobs plain JS objects so we can add new fields
 
-    // count applications for each job
+    // Count applications for each job
     const jobsWithApplicationCounts = await Promise.all(
       jobs.map(async (job) => {
         const applicationCount = await Application.countDocuments({
@@ -108,24 +111,29 @@ exports.getJobsEmployer = async (req, res) => {
         }
       })
     )
+
     res.json(jobsWithApplicationCounts)
   } catch (err) {
     res.status(500).json({ message: err.message })
   }
 }
 
-//@desc get single job by id
+// @desc    Get single job by ID
 exports.getJobById = async (req, res) => {
   try {
     const { userId } = req.query
+
     const job = await Job.findById(req.params.id).populate(
       "company",
       "name companyName companyLogo"
     )
+
     if (!job) {
       return res.status(404).json({ message: "Job not found" })
     }
+
     let applicationStatus = null
+
     if (userId) {
       const application = await Application.findOne({
         job: job._id,
@@ -136,6 +144,7 @@ exports.getJobById = async (req, res) => {
         applicationStatus = application.status
       }
     }
+
     res.json({
       ...job.toObject(),
       applicationStatus,
@@ -145,12 +154,11 @@ exports.getJobById = async (req, res) => {
   }
 }
 
-//@desc update a job ( employer only)
-
+// @desc    Update a job (Employer only)
 exports.updateJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id)
-    if (!job) return res.status(404).json({ message: "job not found" })
+    if (!job) return res.status(404).json({ message: "Job not found" })
 
     if (job.company.toString() !== req.user._id.toString()) {
       return res
@@ -165,8 +173,8 @@ exports.updateJob = async (req, res) => {
     res.status(500).json({ message: err.message })
   }
 }
-//@desc delete a job ( employer only)
 
+// @desc    Delete a job (Employer only)
 exports.deleteJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id)
@@ -177,6 +185,7 @@ exports.deleteJob = async (req, res) => {
         .status(403)
         .json({ message: "Not authorized to delete this job" })
     }
+
     await job.deleteOne()
     res.json({ message: "Job deleted successfully" })
   } catch (err) {
@@ -184,7 +193,7 @@ exports.deleteJob = async (req, res) => {
   }
 }
 
-//@desc Toggle close status for a job ( employer only)
+// @desc    Toggle Close Status for a job (Employer only)
 exports.toggleCloseJob = async (req, res) => {
   try {
     const job = await Job.findById(req.params.id)

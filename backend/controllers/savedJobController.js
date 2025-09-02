@@ -1,14 +1,13 @@
 const SavedJob = require("../models/SavedJob")
 
-//@desc save a job
-
+// @desc Save a job
 exports.saveJob = async (req, res) => {
   try {
     const exists = await SavedJob.findOne({
       job: req.params.jobId,
       jobseeker: req.user._id,
     })
-    if (exists) return res.status(400).json({ message: "Job Already Saved" })
+    if (exists) return res.status(400).json({ message: "Job already saved" })
 
     const saved = await SavedJob.create({
       job: req.params.jobId,
@@ -16,14 +15,11 @@ exports.saveJob = async (req, res) => {
     })
     res.status(201).json(saved)
   } catch (err) {
-    res
-      .status(500)
-      .json({ message: "Failed to save a job", error: err.message })
+    res.status(500).json({ message: "Failed to save job", error: err.message })
   }
 }
 
-//@desc unsave a job
-
+// @desc Unsave a job
 exports.unsaveJob = async (req, res) => {
   try {
     await SavedJob.findOneAndDelete({
@@ -38,7 +34,7 @@ exports.unsaveJob = async (req, res) => {
   }
 }
 
-//@desc get saved jobs for current user
+// @desc Get saved jobs for current user
 exports.getMySavedJobs = async (req, res) => {
   try {
     const savedJobs = await SavedJob.find({ jobseeker: req.user._id }).populate(
@@ -54,6 +50,6 @@ exports.getMySavedJobs = async (req, res) => {
   } catch (err) {
     res
       .status(500)
-      .json({ message: "Failed to fetch saved job", error: err.message })
+      .json({ message: "Failed to fetch saved jobs", error: err.message })
   }
 }

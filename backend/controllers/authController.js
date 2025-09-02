@@ -1,12 +1,12 @@
 const User = require("../models/User")
 const jwt = require("jsonwebtoken")
 
-//genererate toker
+// Generate token
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "60d" })
 }
 
-//@desc register new user
+// @desc Register new user
 exports.register = async (req, res) => {
   try {
     const { name, email, password, avatar, role } = req.body
@@ -33,7 +33,7 @@ exports.register = async (req, res) => {
   }
 }
 
-//@desc login user
+// @desc Login user
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body
@@ -41,6 +41,7 @@ exports.login = async (req, res) => {
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" })
     }
+
     res.json({
       _id: user._id,
       name: user.name,
@@ -58,7 +59,7 @@ exports.login = async (req, res) => {
   }
 }
 
-//@dest get logged in user
+// @desc Get logged-in user
 exports.getMe = async (req, res) => {
   res.json(req.user)
 }
