@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true)
       }
     } catch (error) {
-      console.error("Auth Check Failed", error)
+      console.error("Auth check failed:", error)
       logout()
     } finally {
       setLoading(false)
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
     window.location.href = "/"
   }
 
-  const updateUser = (updateUserData) => {
+  const updateUser = (updatedUserData) => {
     const newUserData = { ...user, ...updatedUserData }
     localStorage.setItem("user", JSON.stringify(newUserData))
     setUser(newUserData)
@@ -70,5 +70,6 @@ export const AuthProvider = ({ children }) => {
     updateUser,
     checkAuthStatus,
   }
-  return <AuthContext.Provider value={value}> {children} </AuthContext.Provider>
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }

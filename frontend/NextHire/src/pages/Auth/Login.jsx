@@ -10,12 +10,13 @@ import {
   CheckCircle,
 } from "lucide-react"
 import { validateEmail } from "../../utils/helper"
-import axiosInstance from "../../utils/axiosInstance"
-import { API_PATHS } from "../../utils/apiPaths"
 import { useAuth } from "../../context/AuthContext"
+import { API_PATHS } from "../../utils/apiPaths"
+import axiosInstance from "../../utils/axiosInstance"
 
 const Login = () => {
   const { login } = useAuth()
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -34,7 +35,7 @@ const Login = () => {
     return ""
   }
 
-  //Handle Input Changes
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -42,7 +43,7 @@ const Login = () => {
       [name]: value,
     }))
 
-    //Clear Error When user starts typing
+    // Clear error when user starts typing
     if (formState.errors[name]) {
       setFormState((prev) => ({
         ...prev,
@@ -57,7 +58,7 @@ const Login = () => {
       password: validatePassword(formData.password),
     }
 
-    //Remove Empty ERRORS
+    // Remove empty errors
     Object.keys(errors).forEach((key) => {
       if (!errors[key]) delete errors[key]
     })
@@ -74,12 +75,13 @@ const Login = () => {
     setFormState((prev) => ({ ...prev, loading: true }))
 
     try {
-      //Login API integration
+      // Login API integration
       const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
         email: formData.email,
         password: formData.password,
         rememberMe: formData.rememberMe,
       })
+
       setFormState((prev) => ({
         ...prev,
         loading: false,
@@ -92,17 +94,17 @@ const Login = () => {
       if (token) {
         login(response.data, token)
 
-        //redirect based on role
+        // Redirect based on role
         setTimeout(() => {
           window.location.href =
             role === "employer" ? "/employer-dashboard" : "/find-jobs"
         }, 2000)
       }
 
-      //redirect based on user role
+      // Redirect based on user role
       setTimeout(() => {
         const redirectPath =
-          user.role === "employer" ? "/employer/dashboard" : "/find-jobs"
+          user.role === "employer" ? "/employer-dashboard" : "/find-jobs"
         window.location.href = redirectPath
       }, 1500)
     } catch (error) {
@@ -112,7 +114,7 @@ const Login = () => {
         errors: {
           submit:
             error.response?.data?.message ||
-            "Login Failed. Please Check Your Credentials",
+            "Login failed. Please check your credentials.",
         },
       }))
     }
@@ -131,13 +133,11 @@ const Login = () => {
             Welcome Back!
           </h2>
           <p className="text-gray-600 mb-4">
-            {" "}
             You have been successfully logged in.
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mx-auto" />
           <p className="text-sm text-gray-500 mt-2">
-            {" "}
-            Redirecting to your dashboard
+            Redirecting to your dashboard...
           </p>
         </motion.div>
       </div>
@@ -156,11 +156,11 @@ const Login = () => {
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Welcome Back
           </h2>
-          <p className="text-gray-600">Sign in to your NextHire account</p>
+          <p className="text-gray-600">Sign in to your JobPortal account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/*Email*/}
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Email Address
@@ -178,7 +178,6 @@ const Login = () => {
                 placeholder="Enter your email"
               />
             </div>
-
             {formState.errors.email && (
               <p className="text-red-500 text-sm mt-1 flex items-center">
                 <AlertCircle className="w-4 h-4 mr-1" />
@@ -187,7 +186,7 @@ const Login = () => {
             )}
           </div>
 
-          {/*Password*/}
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Password
@@ -219,11 +218,10 @@ const Login = () => {
                 {formState.showPassword ? (
                   <EyeOff className="w-5 h-5" />
                 ) : (
-                  <Eye className="w-5 h-5" />
+                  <Eye clasw-5 h-5sName="" />
                 )}
               </button>
             </div>
-
             {formState.errors.password && (
               <p className="text-red-500 text-sm mt-1 flex items-center">
                 <AlertCircle className="w-4 h-4 mr-1" />
@@ -232,10 +230,9 @@ const Login = () => {
             )}
           </div>
 
-          {/* Submit error */}
-
+          {/* Submit Error */}
           {formState.errors.submit && (
-            <div className="bg-red-50 border-red-200 rounded-lg p-3">
+            <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <p className="text-red-700 text-sm flex items-center">
                 <AlertCircle className="w-4 h-4 mr-2" />
                 {formState.errors.submit}
@@ -243,12 +240,11 @@ const Login = () => {
             </div>
           )}
 
-          {/*submit button */}
-
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={formState.loading}
-            className="w-full bg-gradient-to-r from-yellow-600 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-yellow-700 hover:to-orange-700 transition-all duration-300 disabled:opacity-50 cursor-pointer flex items-center justify-center space-x-2"
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           >
             {formState.loading ? (
               <>
@@ -260,13 +256,13 @@ const Login = () => {
             )}
           </button>
 
-          {/*Sign Up Link */}
+          {/* Sign Up Link */}
           <div className="text-center">
             <p className="text-gray-600">
               Don't have an account?{" "}
               <a
                 href="/signup"
-                className="text-yellow-600 hover:text-yellow-700 font-medium"
+                className="text-blue-600 hover:text-blue-700 font-medium"
               >
                 Create one here
               </a>

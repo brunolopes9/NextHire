@@ -1,10 +1,4 @@
 import React, { useState } from "react"
-import {
-  validateEmail,
-  validatePassword,
-  validateAvatar,
-} from "../../utils/helper"
-
 import { motion } from "framer-motion"
 import {
   User,
@@ -19,15 +13,18 @@ import {
   AlertCircle,
   Loader,
 } from "lucide-react"
-
+import {
+  validateAvatar,
+  validateEmail,
+  validatePassword,
+} from "../../utils/helper"
 import axiosInstance from "../../utils/axiosInstance"
 import { API_PATHS } from "../../utils/apiPaths"
 import uploadImage from "../../utils/uploadImage"
 import { useAuth } from "../../context/AuthContext"
 
 const SignUp = () => {
-  const {login} = useAuth();
-
+  const { login } = useAuth()
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -45,7 +42,7 @@ const SignUp = () => {
     success: false,
   })
 
-  //Handle Input Changes
+  // Handle input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setFormData((prev) => ({
@@ -53,7 +50,7 @@ const SignUp = () => {
       [name]: value,
     }))
 
-    //Clear Error When user starts typing
+    // Clear error when user starts typing
     if (formState.errors[name]) {
       setFormState((prev) => ({
         ...prev,
@@ -83,8 +80,10 @@ const SignUp = () => {
         }))
         return
       }
+
       setFormData((prev) => ({ ...prev, avatar: file }))
-      ///create preview
+
+      // Create preview
       const reader = new FileReader()
       reader.onload = (e) => {
         setFormState((prev) => ({
@@ -99,71 +98,75 @@ const SignUp = () => {
 
   const validateForm = () => {
     const errors = {
-      fullName: !formData.fullName ? "Enter Full Name" : "",
+      fullName: !formData.fullName ? "Enter full name" : "",
       email: validateEmail(formData.email),
       password: validatePassword(formData.password),
       role: !formData.role ? "Please select a role" : "",
       avatar: "",
     }
 
-    // Remove Empty Errors
+    // Remove empty errors
     Object.keys(errors).forEach((key) => {
       if (!errors[key]) delete errors[key]
     })
+
     setFormState((prev) => ({ ...prev, errors }))
     return Object.keys(errors).length === 0
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
     if (!validateForm()) return
+
     setFormState((prev) => ({ ...prev, loading: true }))
+
     try {
+      let avatarUrl = ""
 
-let avatarUrl = "";
+      // Upload image if present
+      if (formData.avatar) {
+        const imgUploadRes = await uploadImage(formData.avatar)
+        avatarUrl = imgUploadRes.imageUrl || ""
+      }
 
-//Upload image if present
-if (formData.avatar) {
-  const imgUploadRes = await uploadImage(formData.avatar);
-  avatarUrl = imgUploadRes.imageUrl || "";
-}
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        avatar: avatarUrl || "",
+      })
 
-const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
-  name: formData.fullName,
-  email: formData.email,
-  password: formData.password,
-  role:formData.role,
-  avatar: avatarUrl || "",
-});
+      // Handle successful registration
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        errors: {},
+      }))
 
-// Handle successfull registration
-setFormState((prev) => ({
-  ...prev,
-  loading:false,
-  success:true,
-  errors: {}
-}))
+      const { token } = response.data
 
-const {token} = response.data;
+      if (token) {
+        login(response.data, token)
 
-if (token) {
-  login(response.data, token);
-
-  //redirect based on role
-  setTimeout(()=> {
-    window.location.href= formData.role === "employer" ? "/employer-dashboard" : "/find-jobs"; },2000);
-  }
-}
-
+        // Redirect based on role
+        setTimeout(() => {
+          window.location.href =
+            formData.role === "employer" ? "/employer-dashboard" : "/find-jobs"
+        }, 2000)
+      }
     } catch (error) {
       console.log("error", error)
+
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
           submit:
             error.response?.data?.message ||
-            "Registrate failed. Please try again.",
+            "Registration failed. Please try again.",
         },
       }))
     }
@@ -179,16 +182,14 @@ if (token) {
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            Account Created!{" "}
+            Account Created!
           </h2>
           <p className="text-gray-600 mb-4">
-            {" "}
-            Welcome to NexHire ! Your account has been successfully created{" "}
+            Welcome to JobPortal! Your account has been successfully created.
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mx-auto" />
           <p className="text-sm text-gray-500 mt-2">
-            {" "}
-            Redirecting to your dashboard
+            Redirecting to your dashboard...
           </p>
         </motion.div>
       </div>
@@ -196,7 +197,7 @@ if (token) {
   }
 
   return (
-    <div className=" min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -240,9 +241,10 @@ if (token) {
               </p>
             )}
           </div>
+
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 ">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Email Address *
             </label>
             <div className="relative">
@@ -265,7 +267,8 @@ if (token) {
               </p>
             )}
           </div>
-          {/*Password*/}
+
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Password *
@@ -284,7 +287,6 @@ if (token) {
                 } focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors`}
                 placeholder="Create a strong password"
               />
-
               <button
                 type="button"
                 onClick={() =>
@@ -293,7 +295,7 @@ if (token) {
                     showPassword: !prev.showPassword,
                   }))
                 }
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 "
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 {formState.showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -309,7 +311,8 @@ if (token) {
               </p>
             )}
           </div>
-          {/* avatar */}
+
+          {/* Avatar Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Profile Picture (Optional)
@@ -319,7 +322,7 @@ if (token) {
                 {formState.avatarPreview ? (
                   <img
                     src={formState.avatarPreview}
-                    alt="Avatar Preview"
+                    alt="Avatar preview"
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -341,10 +344,7 @@ if (token) {
                   <Upload className="w-4 h-4" />
                   <span>Upload Photo</span>
                 </label>
-                <p className="text-xs text-gray-500 mt-1">
-                  {" "}
-                  JPG, PNG,up to 5MB
-                </p>
+                <p className="text-xs text-gray-500 mt-1">JPG, PNG up to 5MB</p>
               </div>
             </div>
             {formState.errors.avatar && (
@@ -354,7 +354,8 @@ if (token) {
               </p>
             )}
           </div>
-          {/*Role Selection */}
+
+          {/* Role Selection */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-3">
               I am a *
@@ -363,14 +364,14 @@ if (token) {
               <button
                 type="button"
                 onClick={() => handleRoleChange("jobseeker")}
-                className={`cursor-pointer p-4 rounded-lg border-2 transition-all ${
+                className={`p-4 rounded-lg border-2 transition-all ${
                   formData.role === "jobseeker"
                     ? "border-blue-500 bg-blue-50 text-blue-700"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <UserCheck className="w-8 h-8 mx-auto mb-2" />
-                <div className="font-medium"> Job Seeker </div>
+                <div className="font-medium">Job Seeker</div>
                 <div className="text-xs text-gray-500">
                   Looking for opportunities
                 </div>
@@ -378,15 +379,15 @@ if (token) {
               <button
                 type="button"
                 onClick={() => handleRoleChange("employer")}
-                className={`cursor-pointer  p-4 rounded-lg border-2 transition-all ${
+                className={`p-4 rounded-lg border-2 transition-all ${
                   formData.role === "employer"
                     ? "border-blue-500 bg-blue-50 text-blue-700"
                     : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <Building2 className="w-8 h-8 mx-auto mb-2" />
-                <div className="font-medium"> Employer </div>
-                <div className="text-xs text-gray-500"> Hiring Talent </div>
+                <div className="font-medium">Employer</div>
+                <div className="text-xs text-gray-500">Hiring talent</div>
               </button>
             </div>
             {formState.errors.role && (
@@ -396,7 +397,8 @@ if (token) {
               </p>
             )}
           </div>
-          {/*Submit Error */}
+
+          {/* Submit Error */}
           {formState.errors.submit && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <p className="text-red-700 text-sm flex items-center">
@@ -405,30 +407,32 @@ if (token) {
               </p>
             </div>
           )}
+
           {/* Submit Button */}
           <button
             type="submit"
             disabled={formState.loading}
-            className="cursor-pointer w-full bg-gradient-to-r from-yellow-700 to-orange-600 text-white py-3 rounded-lg font-semibold hover:from-yellow-600 hover:to-orange-600 transition-all duration-300 disabled:opacity-50  flex items-center justify-center space-x-2 "
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
           >
             {formState.loading ? (
               <>
                 <Loader className="w-5 h-5 animate-spin" />
-                <span> Creating Account...</span>
+                <span>Creating Account...</span>
               </>
             ) : (
-              <span> Create Account</span>
+              <span>Create Account</span>
             )}
           </button>
+
           {/* Login Link */}
           <div className="text-center">
             <p className="text-gray-600">
               Already have an account?{" "}
               <a
                 href="/login"
-                className="text-yellow-600 hover:text-yellow-700 font-medium"
+                className="text-blue-600 hover:text-blue-700 font-medium"
               >
-                Sign in here{" "}
+                Sign in here
               </a>
             </p>
           </div>
