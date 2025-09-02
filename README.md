@@ -3,6 +3,11 @@ Next Hire
 Next Hire is a **full-featured Job Portal** built with the **MERN stack (MongoDB, Express, React, Node.js)**. It allows **employers** to post jobs and manage applications while **job seekers** can search for jobs, save favorites, and manage their profile.
 ## 📝 Screenshots
 <p> <img src="/frontend/NextHire/public/1.png"> </p>
+<p> <img src="/frontend/NextHire/public/2.png"> </p>
+<p> <img src="/frontend/NextHire/public/3.png"> </p>
+<p> <img src="/frontend/NextHire/public/4.png"> </p>
+<p> <img src="/frontend/NextHire/public/5.png"> </p>
+<p> <img src="/frontend/NextHire/public/6.png"> </p>
 ---
 
 ## 📝 Features
