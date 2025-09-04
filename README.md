@@ -1,4 +1,4 @@
-Next Hire
+🚀 Live Demo -> https://bruno-folio-8y1g.vercel.app/](https://nexthire-3-frontend.onrender.com
 
 Next Hire is a **full-featured Job Portal** built with the **MERN stack (MongoDB, Express, React, Node.js)**. It allows **employers** to post jobs and manage applications while **job seekers** can search for jobs, save favorites, and manage their profile.
 ## 📝 Screenshots
